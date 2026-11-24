@@ -115,6 +115,19 @@ export async function userRoutes(app: FastifyInstance) {
         );
       }
 
+      // phone_hash es UNIQUE: sin esta revision el INSERT tronaba con un 500.
+      // Pasa cuando la misma persona entra con otra billetera (APK y web).
+      if (phone_hash) {
+        const phoneOwner = await db.getOne("SELECT id FROM users WHERE phone_hash = $1", [phone_hash]);
+        if (phoneOwner) {
+          throw new ConflictError(
+            "PHONE_ALREADY_REGISTERED",
+            "Ese teléfono ya tiene una cuenta de MicoPay. Entra con la billetera de esa cuenta o deja el teléfono vacío.",
+            "phone_hash is already registered to another account",
+          );
+        }
+      }
+
       // RED-1: abrir una cuenta NO te mete en Red MicoPay. Antes esto pasaba
       // `true` y publicaba a toda persona registrada como proveedora de efectivo
       // en el mapa, sin que lo hubiera decidido. El alta es explicita y vive en

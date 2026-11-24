@@ -67,6 +67,7 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
       await enter(await registerUser(username.trim(), phoneHash));
     } catch (e: unknown) {
       if (e instanceof ApiError && e.code === 'USERNAME_TAKEN') setError('Ese nombre de usuario ya está ocupado. Elige otro.');
+      else if (e instanceof ApiError && e.code === 'PHONE_ALREADY_REGISTERED') setError('Ese teléfono ya tiene una cuenta. Entra con la billetera de esa cuenta o deja el teléfono vacío.');
       else setError(e instanceof Error ? e.message : 'No se pudo crear tu cuenta');
     } finally {
       setLoading(false);
