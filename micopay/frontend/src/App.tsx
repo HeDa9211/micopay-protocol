@@ -291,10 +291,21 @@ function SendPaymentRoute() {
 
 function ReceivePaymentRoute() {
   const navigate = useNavigate();
-  const { devicePublicKey } = useAppCtx();
+  const { devicePublicKey, sessionUser } = useAppCtx();
+  // En la web no hay llave del dispositivo: la cuenta es la de la billetera
+  // con la que se registro, igual que en Perfil.
+  const [accountAddress, setAccountAddress] = useState<string | null>(null);
+  useEffect(() => {
+    if (devicePublicKey || !IS_EXTERNAL_SIGNER || !sessionUser?.token) return;
+    let cancelled = false;
+    getCurrentUser(sessionUser.token)
+      .then((u) => { if (!cancelled) setAccountAddress(u.stellar_address ?? null); })
+      .catch(() => { /* sin direccion: la pantalla muestra el aviso */ });
+    return () => { cancelled = true; };
+  }, [devicePublicKey, sessionUser?.token]);
   return (
       <ReceivePayment
-          address={devicePublicKey}
+          address={devicePublicKey ?? accountAddress}
           onBack={() => navigate('/pay')}
       />
   );
