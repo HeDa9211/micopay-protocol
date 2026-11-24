@@ -494,7 +494,9 @@
     "verifyingEscrowStatus": "Verificando estado de la garantía…",
     "tradeStatus": "Operación: {{status}}",
     "depositWaitingLockTitle": "Esperando que el agente bloquee los fondos",
-    "depositWaitingLockDesc": "Todavía no hay garantía. NO entregues el efectivo hasta que este aviso cambie a verde."
+    "depositWaitingLockDesc": "Todavía no hay garantía. NO entregues el efectivo hasta que este aviso cambie a verde.",
+    "stateFallbackLabel": "Operación en curso",
+    "stateFallbackNext": "Estamos verificando el estado con el servidor."
   },
   "qrReveal": {
     "verified": "Verificado",
@@ -785,5 +787,58 @@
     "pendingTitle": "Pendiente de sincronizar",
     "pendingBody": "Tienes cambios esperando ser sincronizados con el servidor.",
     "retry": "Reintentar"
+  },
+  "tradeState": {
+    "locked": {
+      "label": "Operación bloqueada",
+      "happened": "La operación ya se abrió y los fondos quedaron en garantía.",
+      "next": "Comparte o presenta el código para continuar con la entrega de efectivo.",
+      "safe": "Tu saldo sigue protegido en contrato hasta que el proceso termine."
+    },
+    "pending": {
+      "label": "Operación creada",
+      "happened": "La solicitud se registró, pero los fondos todavía no entran en garantía.",
+      "next": "Confirma la operación para bloquear los fondos en el contrato.",
+      "safe": "Aún no se movió tu saldo: nada queda comprometido hasta el bloqueo."
+    },
+    "revealing": {
+      "label": "Esperando la entrega",
+      "happened": "El código ya se reveló y la entrega de efectivo puede ocurrir.",
+      "next": "Muestra el código al agente; los fondos se liberan al confirmarse la entrega.",
+      "safe": "Tu saldo sigue en garantía hasta que la entrega quede confirmada."
+    },
+    "completed": {
+      "label": "Operación completada",
+      "happened": "La operación se confirmó y el movimiento quedó cerrado.",
+      "next": "Puedes volver al inicio o revisar el historial de actividad.",
+      "safe": "Tus fondos ya se movieron al destino final de esta operación."
+    },
+    "cancelled": {
+      "label": "Operación cancelada",
+      "happened": "La operación se detuvo antes de completarse.",
+      "next": "Inicia una nueva solicitud cuando quieras intentarlo de nuevo.",
+      "safe": "Tus fondos no se pierden: quedan asegurados para devolución o reintento.",
+      "recovery": "Crear nueva solicitud"
+    },
+    "expired": {
+      "label": "Tiempo agotado",
+      "happened": "La operación venció por tiempo sin confirmarse.",
+      "next": "Puedes iniciar otra operación para continuar.",
+      "safe": "El sistema protege tu saldo y procede a liberar o reembolsar.",
+      "recovery": "Intentar de nuevo"
+    },
+    "refunded": {
+      "label": "Fondos reembolsados",
+      "happened": "La operación se cerró y el saldo regresó a tu cuenta.",
+      "next": "Puedes crear una nueva solicitud cuando te convenga.",
+      "safe": "Tus fondos ya están de vuelta y disponibles.",
+      "recovery": "Hacer otra solicitud"
+    },
+    "unknown": {
+      "title": "Estado no reconocido",
+      "body": "La app no reconoce el estado <code>{{state}}</code> que reportó el servidor.",
+      "safe": "Tus fondos siguen protegidos por el contrato. Actualiza la app o escribe a soporte antes de intentar cualquier acción."
+    },
+    "retry": "Volver a intentar"
   }
 }

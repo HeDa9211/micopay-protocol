@@ -494,7 +494,9 @@
     "verifyingEscrowStatus": "Verifying escrow status…",
     "tradeStatus": "Trade: {{status}}",
     "depositWaitingLockTitle": "Waiting for the agent to lock the funds",
-    "depositWaitingLockDesc": "There is no escrow yet. Do NOT hand over the cash until this notice turns green."
+    "depositWaitingLockDesc": "There is no escrow yet. Do NOT hand over the cash until this notice turns green.",
+    "stateFallbackLabel": "Trade in progress",
+    "stateFallbackNext": "We're checking the status with the server."
   },
   "qrReveal": {
     "verified": "Verified",
@@ -785,5 +787,58 @@
     "pendingTitle": "Pending sync",
     "pendingBody": "You have changes waiting to be synced with the server.",
     "retry": "Retry"
+  },
+  "tradeState": {
+    "locked": {
+      "label": "Trade locked",
+      "happened": "The trade is open and the funds are held in escrow.",
+      "next": "Share or show the code to continue with the cash handoff.",
+      "safe": "Your balance stays protected by the contract until the process ends."
+    },
+    "pending": {
+      "label": "Trade created",
+      "happened": "The request was recorded, but the funds are not in escrow yet.",
+      "next": "Confirm the trade to lock the funds in the contract.",
+      "safe": "Your balance hasn't moved: nothing is committed until the lock."
+    },
+    "revealing": {
+      "label": "Waiting for the handoff",
+      "happened": "The code has been revealed and the cash handoff can happen.",
+      "next": "Show the code to the agent; the funds are released once the handoff is confirmed.",
+      "safe": "Your balance stays in escrow until the handoff is confirmed."
+    },
+    "completed": {
+      "label": "Trade completed",
+      "happened": "The trade was confirmed and the movement is closed.",
+      "next": "You can go back home or check your activity history.",
+      "safe": "Your funds have moved to this trade's final destination."
+    },
+    "cancelled": {
+      "label": "Trade cancelled",
+      "happened": "The trade stopped before it was completed.",
+      "next": "Start a new request whenever you want to try again.",
+      "safe": "Your funds aren't lost: they stay secured for a refund or a retry.",
+      "recovery": "Create a new request"
+    },
+    "expired": {
+      "label": "Time ran out",
+      "happened": "The trade expired without being confirmed.",
+      "next": "You can start another trade to continue.",
+      "safe": "The system protects your balance and proceeds to release or refund it.",
+      "recovery": "Try again"
+    },
+    "refunded": {
+      "label": "Funds refunded",
+      "happened": "The trade closed and the balance went back to your account.",
+      "next": "You can create a new request whenever it suits you.",
+      "safe": "Your funds are back and available.",
+      "recovery": "Make another request"
+    },
+    "unknown": {
+      "title": "Unrecognized status",
+      "body": "The app doesn't recognize the status <code>{{state}}</code> reported by the server.",
+      "safe": "Your funds are still protected by the contract. Update the app or contact support before trying anything."
+    },
+    "retry": "Try again"
   }
 }

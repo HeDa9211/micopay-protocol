@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import { useChatMessages } from '../hooks/useChatMessages';
 import { getTrade, type TradeData } from '../services/api';
 import TradeEscrowSummary from '../components/TradeEscrowSummary';
@@ -15,8 +16,8 @@ function stateCopy(status: string): { label: string; next: string } {
     const parsed = parseTradeState(status);
     if (parsed) return TRADE_STATE_COPY[parsed];
     return {
-        label: 'Operación en curso',
-        next: 'Estamos verificando el estado con el servidor.',
+        label: i18n.t('chatRoom.stateFallbackLabel'),
+        next: i18n.t('chatRoom.stateFallbackNext'),
     };
 }
 
