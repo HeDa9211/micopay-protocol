@@ -1,5 +1,49 @@
 # 🍄 MicoPay
 
+## Launching on November 27, 2026 (BAF Ship It)
+
+By Friday, November 27, we will ship MicoPay working end to end on
+**Stellar Testnet**, on Android and on the web, with the escrow contract
+that is already deployed.
+
+1. **Backend back online.** The AWS stack (RDS database, ECS service and
+   load balancer) running again and serving the app and the web.
+2. **New Android APK.** A release build with every fix below. Users keep
+   their keys on the phone and sign each operation with their fingerprint.
+   The APK and the web share the same backend, so both get the same fixes.
+3. **MicoPay on the web.** The same app in the browser at
+   [app.micopay.com.mx](https://app.micopay.com.mx), for clients and cash
+   providers, signing with your own Stellar wallet. Clients can request cash
+   deposits and withdrawals, and providers can run their operations from a PC.
+   This includes the QA fixes from our web testing: providers can operate the
+   full flow, retries and reloads do not create phantom operations, USDC
+   works, and expired operations are explained and handled.
+4. **Cash protection.** A client who paid in cash and was not confirmed can
+   report it ("I paid and wasn't confirmed"). An open report stops the
+   automatic refund and sends the case to support. An expired deposit waits
+   15 minutes before it is refunded, so the client has time to report.
+5. **Chain reconciliation.** The backend compares its records with the escrow
+   contract and flags any mismatch for review instead of guessing.
+6. **MicoPay wallet on the web.** Connect the MicoPay APK to the web app with
+   a QR code (WalletConnect) and approve each signature on the phone, with
+   your fingerprint. The same connection opens the web app to other Stellar
+   wallets.
+7. **Demo.** A 60–90 second video of a deposit and a withdrawal, from the web
+   and from the APK.
+
+**Across the ecosystem.** In parallel, contributors are working on the other
+MicoPay repositories through Drips Wave 11:
+[MicoPay Café](https://github.com/Micopay/micopay-cafe) (payments to coffee
+producers: receipts, payment verification against Stellar, payment history),
+[MicoPay Rentas](https://github.com/Micopay/micopay-rentas) (short-term
+rentals with escrow: pay after check-in, payment links, booking calendar) and
+[MicoPay Issuer OS](https://github.com/Micopay/micopay-issuer-os) (tools for
+third parties that issue an asset: coverage dashboard, operation detail,
+discrepancies panel). Each one also has product-validation issues, where
+contributors test whether people understand the product and see value in it.
+
+---
+
 **A mobile wallet connecting Stellar payments with cash in Mexico.**
 
 > **Status:** Active development. Stellar Testnet; mainnet deployment pending.
