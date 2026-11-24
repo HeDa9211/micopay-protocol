@@ -16,6 +16,10 @@ import { useWalletBalance } from '../hooks/useWalletBalance';
 import BetaBanner from '../components/BetaBanner';
 import { getPendingSignatureRequests, SignatureRequest } from '../services/signRequestService';
 import { STELLAR_NETWORK_LABEL } from '../utils/stellarExplorer';
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 const EXPLORER = "https://stellar.expert/explorer/testnet/tx";
 
@@ -307,7 +311,7 @@ const Home = ({
         <div>
         {showBalanceError && walletBalanceError ? (
           <ErrorBanner
-            message={walletBalanceError.message || "Error al cargar el balance"}
+            message={walletBalanceError.message || tr('homeText.s1')}
             action="retry"
             onRetry={loadBalance}
             onDismiss={() => setShowBalanceError(false)}

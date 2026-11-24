@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { SUPPORT_EMAIL } from '../constants/contact';
 import { IS_EXTERNAL_SIGNER } from '../lib/signer/mode';
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 type Props = {
   tradeId?: string;
@@ -32,8 +36,7 @@ export default function SupportLink({ tradeId, state }: Props) {
     <>
       <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: '"FILL" 1' }}>
         support_agent
-      </span>
-      ¿Necesitas ayuda?
+      </span>{tr('supportLink.s1')}
     </>
   );
 
@@ -48,10 +51,9 @@ export default function SupportLink({ tradeId, state }: Props) {
           {label}
         </button>
         {open && (
-          <span className="text-sm text-tinta" role="status">
-            Escríbenos a <span className="font-bold select-all">{SUPPORT_EMAIL}</span>
+          <span className="text-sm text-tinta" role="status">{tr('supportLink.s2')}{' '}<span className="font-bold select-all">{SUPPORT_EMAIL}</span>
             {copied ? ' (copiado)' : ''}
-            {tradeId ? <> e incluye el código de operación <span className="font-mono">{tradeId.slice(0, 8)}</span>.</> : '.'}
+            {tradeId ? <>{tr('supportLink.s3')}{' '}<span className="font-mono">{tradeId.slice(0, 8)}</span>.</> : '.'}
           </span>
         )}
       </span>

@@ -12,6 +12,10 @@ import { buildTxUrl, STELLAR_NETWORK_LABEL } from '../utils/stellarExplorer';
 import { useCountdown } from '../hooks/useCountdown';
 import TradeEscrowSummary from '../components/TradeEscrowSummary';
 import { assertNoClientPreparationForLock } from '../utils/escrowLock';
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 interface QRRevealProps {
     activeTrade: TradeData | null;
@@ -212,13 +216,13 @@ const QRReveal = ({ activeTrade, token, viewerId, counterpartyName, ownName, onB
                         <div className="flex gap-3">
                             <button
                                 onClick={onChat}
-                                aria-label="Abrir chat con el agente"
+                                aria-label={tr('qrRevealText.s1')}
                                 className="flex-1 min-h-12 px-4 rounded-sm border-2 border-tinta bg-papel text-tinta font-bold font-bold text-sm hover:bg-primary/5 transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 <span aria-hidden="true" className="material-symbols-outlined text-sm">chat</span>
                                 {t('qrReveal.openChat')}
                             </button>
-                            <button aria-label="Ver ubicación del agente" className="flex-1 min-h-12 px-4 rounded-sm border-2 border-tinta bg-papel text-tinta font-bold font-bold text-sm hover:bg-primary/5 transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <button aria-label={tr('qrRevealText.s2')} className="flex-1 min-h-12 px-4 rounded-sm border-2 border-tinta bg-papel text-tinta font-bold font-bold text-sm hover:bg-primary/5 transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary">
                                 <span aria-hidden="true" className="material-symbols-outlined text-sm">location_on</span>
                                 {t('qrReveal.location')}
                             </button>
@@ -250,8 +254,8 @@ const QRReveal = ({ activeTrade, token, viewerId, counterpartyName, ownName, onB
                     ) : handoffConfirmed && !completedTxHash ? (
                         <div className="flex flex-col items-center gap-3 py-10">
                             <span aria-hidden="true" className="material-symbols-outlined text-verde text-4xl" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
-                            <p className="text-sm font-semibold text-on-surface">El agente registró la entrega del efectivo.</p>
-                            <p className="text-xs text-outline max-w-xs">Ya no necesitas otro código. La operación se cierra cuando el agente libere los fondos.</p>
+                            <p className="text-sm font-semibold text-on-surface">{tr('qrRevealText.s3')}</p>
+                            <p className="text-xs text-outline max-w-xs">{tr('qrRevealText.s4')}</p>
                         </div>
                     ) : qrExpired ? (
                         <div className="flex flex-col items-center gap-4 py-10">

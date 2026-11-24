@@ -9,6 +9,10 @@ import {
   subscribeWallet,
   type WalletSession,
 } from '../services/walletConnect';
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 /** Conexiones de esta APK con la web: escanear el QR y cerrarlas. */
 export default function WalletConnections() {
@@ -30,7 +34,7 @@ export default function WalletConnections() {
     try {
       await pairWallet(result.value);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudo conectar');
+      setError(err instanceof Error ? err.message : tr('walletConnections.s1'));
     }
   };
 
@@ -40,7 +44,7 @@ export default function WalletConnections() {
       await disconnectWalletSession(topic);
       setSessions(listWalletSessions());
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudo cerrar la conexión');
+      setError(err instanceof Error ? err.message : tr('walletConnections.s2'));
     }
   };
 
@@ -48,23 +52,21 @@ export default function WalletConnections() {
     <div className="min-h-screen p-5 space-y-4">
       <button type="button" aria-label="Volver" onClick={() => navigate(-1)}>←</button>
       <h1 className="text-xl font-bold">Conexiones web</h1>
-      <p className="text-sm">
-        Usa esta cuenta en tu computadora. La llave se queda en este teléfono y aquí apruebas cada firma.
+      <p className="text-sm">{tr('walletConnections.s3')}
       </p>
 
-      {!enabled && <p className="text-sm" role="status">Las conexiones web todavía no están disponibles.</p>}
+      {!enabled && <p className="text-sm" role="status">{tr('walletConnections.s4')}</p>}
       {enabled && (
         <button
           type="button"
           className="w-full bg-tinta text-papel rounded-sm py-3 font-semibold"
           onClick={() => void connect()}
-        >
-          Escanear QR de la web
+        >{tr('walletConnections.s5')}
         </button>
       )}
       {error && <p className="text-sm text-rojo" role="alert">{error}</p>}
 
-      {sessions.length === 0 && enabled && <p className="text-sm opacity-70">No tienes conexiones activas.</p>}
+      {sessions.length === 0 && enabled && <p className="text-sm opacity-70">{tr('walletConnections.s6')}</p>}
       <ul className="space-y-2">
         {sessions.map((session) => (
           <li key={session.topic} className="flex items-center justify-between gap-3 border-2 border-tinta rounded-sm p-3">

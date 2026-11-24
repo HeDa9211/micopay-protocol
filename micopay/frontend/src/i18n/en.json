@@ -1071,5 +1071,57 @@
     "s17": "The button turns on when the agent scans your code.",
     "s18": "Report sent. The funds stay in escrow and support will review the case.",
     "s19": "I paid and they didn't confirm"
+  },
+  "homeText": {
+    "s1": "Error loading the balance"
+  },
+  "historyText": {
+    "s1": "Transaction history",
+    "s2": "We couldn't load your transfers from the network. They'll show up when you open the history again.",
+    "s3": "No transactions",
+    "s4": "We didn't find transactions matching your current filter.",
+    "s5": "Page"
+  },
+  "qrRevealText": {
+    "s1": "Open chat with the agent",
+    "s2": "See the agent's location",
+    "s3": "The agent recorded the cash handoff.",
+    "s4": "You don't need another code. The trade closes when the agent releases the funds."
+  },
+  "merchantSettingsText": {
+    "s1": "Couldn't change the status",
+    "s2": "Fill in the rate, minimum, maximum and daily cap before saving.",
+    "s3": "⏳ Changes saved locally. They'll sync when the connection is back.",
+    "s4": "✅ Settings saved. The daily limit resets at 00:00 UTC.",
+    "s5": "← Back",
+    "s6": "Merchant settings",
+    "s7": "Set your rate and trade limits.",
+    "s8": "Trade status",
+    "s9": "Your business is paused",
+    "s10": "You're receiving requests",
+    "s11": "Minimum amount (MXN)",
+    "s12": "Maximum amount (MXN)",
+    "s13": "This is your",
+    "s14": "meeting point",
+    "s15": "and it's private: only the person you already have an accepted trade with can see it. The public map only shows your approximate location, rounded to about 100 meters.",
+    "s16": "Publish my address on the map.",
+    "s17": "Check it only if you serve from a shop and want anyone to see it without starting a trade. If you operate from home, leave it unchecked."
+  },
+  "walletConnections": {
+    "s1": "Couldn't connect",
+    "s2": "Couldn't close the connection",
+    "s3": "Use this account on your computer. The key stays on this phone and you approve every signature here.",
+    "s4": "Web connections aren't available yet.",
+    "s5": "Scan the web QR",
+    "s6": "You have no active connections."
+  },
+  "supportLink": {
+    "s1": "Need help?",
+    "s2": "Write to us at",
+    "s3": "and include the trade code"
+  },
+  "betaBanner": {
+    "s1": "Technical beta on a test network.",
+    "s2": "No real money moves: balances are simulated and the tokens have no value."
   }
 }

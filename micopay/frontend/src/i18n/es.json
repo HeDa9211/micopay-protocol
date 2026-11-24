@@ -1071,5 +1071,57 @@
     "s17": "El botón se activa cuando el agente escanea tu código.",
     "s18": "Reporte enviado. Los fondos se quedan en garantía y soporte revisará el caso.",
     "s19": "Pagué y no me confirmaron"
+  },
+  "homeText": {
+    "s1": "Error al cargar el balance"
+  },
+  "historyText": {
+    "s1": "Historial de Transacciones",
+    "s2": "No pudimos cargar tus transferencias de la red. Aparecerán al volver a abrir el historial.",
+    "s3": "Sin transacciones",
+    "s4": "No encontramos transacciones que coincidan con tu filtro actual.",
+    "s5": "Página"
+  },
+  "qrRevealText": {
+    "s1": "Abrir chat con el agente",
+    "s2": "Ver ubicación del agente",
+    "s3": "El agente registró la entrega del efectivo.",
+    "s4": "Ya no necesitas otro código. La operación se cierra cuando el agente libere los fondos."
+  },
+  "merchantSettingsText": {
+    "s1": "No se pudo cambiar el estado",
+    "s2": "Completa la tasa, el mínimo, el máximo y el tope diario antes de guardar.",
+    "s3": "⏳ Cambios guardados localmente. Se sincronizarán cuando la conexión se restaure.",
+    "s4": "✅ Configuración guardada exitosamente. El límite diario se reinicia a las 00:00 UTC.",
+    "s5": "← Volver",
+    "s6": "Ajustes del comerciante",
+    "s7": "Configura tu tasa y límites de operación.",
+    "s8": "Estado de operaciones",
+    "s9": "Tu negocio está pausado",
+    "s10": "Estás recibiendo solicitudes",
+    "s11": "Monto mínimo (MXN)",
+    "s12": "Monto máximo (MXN)",
+    "s13": "Esto es tu",
+    "s14": "punto de encuentro",
+    "s15": "y es privado: solo lo ve la persona con la que ya tienes una operación aceptada. En el mapa público únicamente aparece tu ubicación aproximada, redondeada a unos 100 metros.",
+    "s16": "Publicar mi dirección en el mapa.",
+    "s17": "Márcalo solo si atiendes en un local comercial y quieres que cualquiera pueda verla sin haber iniciado una operación. Si operas desde tu casa, déjalo sin marcar."
+  },
+  "walletConnections": {
+    "s1": "No se pudo conectar",
+    "s2": "No se pudo cerrar la conexión",
+    "s3": "Usa esta cuenta en tu computadora. La llave se queda en este teléfono y aquí apruebas cada firma.",
+    "s4": "Las conexiones web todavía no están disponibles.",
+    "s5": "Escanear QR de la web",
+    "s6": "No tienes conexiones activas."
+  },
+  "supportLink": {
+    "s1": "¿Necesitas ayuda?",
+    "s2": "Escríbenos a",
+    "s3": "e incluye el código de operación"
+  },
+  "betaBanner": {
+    "s1": "Beta técnica en red de prueba.",
+    "s2": "No se mueve dinero real: los saldos son simulados y los tokens no tienen valor."
   }
 }
