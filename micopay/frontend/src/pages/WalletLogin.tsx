@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { connectWallet, disconnectWallet } from '../lib/signer/externalSigner';
 import { hashPhone } from '../lib/phoneHash';
@@ -17,6 +19,7 @@ const buttonClass =
 
 /** Entrada de la web: la billetera es la cuenta, sin frase ni respaldo. */
 export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? '/';
@@ -49,7 +52,7 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
       await enter({ id: profile.id, username: profile.username, token });
     } catch (e: unknown) {
       if (e instanceof ApiError && e.code === 'USER_NOT_FOUND') setNeedsAccount(true);
-      else setError(e instanceof Error ? e.message : 'No se pudo conectar tu billetera');
+      else setError(e instanceof Error ? e.message : t('walletLogin.connectFailed'));
     } finally {
       setLoading(false);
     }
@@ -57,7 +60,7 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
 
   const handleRegister = async () => {
     if (!/^[a-zA-Z0-9_]{3,30}$/.test(username.trim())) {
-      setError('Usa de 3 a 30 letras, números o guiones bajos.');
+      setError(t('walletLogin.usernameInvalid'));
       return;
     }
     setError(null);
@@ -66,9 +69,9 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
       const phoneHash = phone.trim() ? await hashPhone(phone.trim()) : undefined;
       await enter(await registerUser(username.trim(), phoneHash));
     } catch (e: unknown) {
-      if (e instanceof ApiError && e.code === 'USERNAME_TAKEN') setError('Ese nombre de usuario ya está ocupado. Elige otro.');
-      else if (e instanceof ApiError && e.code === 'PHONE_ALREADY_REGISTERED') setError('Ese teléfono ya tiene una cuenta. Entra con la billetera de esa cuenta o deja el teléfono vacío.');
-      else setError(e instanceof Error ? e.message : 'No se pudo crear tu cuenta');
+      if (e instanceof ApiError && e.code === 'USERNAME_TAKEN') setError(t('walletLogin.usernameTaken'));
+      else if (e instanceof ApiError && e.code === 'PHONE_ALREADY_REGISTERED') setError(t('walletLogin.phoneTaken'));
+      else setError(e instanceof Error ? e.message : t('walletLogin.createFailed'));
     } finally {
       setLoading(false);
     }
@@ -86,9 +89,10 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
     <div className="min-h-screen bg-fondo flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm bg-papel rounded-sm p-8 space-y-6">
         <div className="text-center">
+          <div className="flex justify-end -mt-4 -mr-4 mb-2"><LanguageToggle /></div>
           <h1 className="font-extrabold text-2xl text-tinta">MicoPay</h1>
           <p className="text-sm text-gris mt-1">
-            {needsAccount ? 'Elige tu nombre de usuario' : 'Conecta tu billetera'}
+            {needsAccount ? t('walletLogin.pickUsername') : t('walletLogin.connectTitle')}
           </p>
         </div>
 
@@ -101,7 +105,7 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
         {notFunded && (
           <div role="status" className="border-2 border-tinta bg-verde-suave rounded-sm px-4 py-3">
             <p className="text-sm text-tinta">
-              Esta cuenta todavía no existe en la red. Necesita recibir XLM antes de poder operar.
+              {t('walletLogin.notFunded')}
             </p>
           </div>
         )}
@@ -109,15 +113,14 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
         {!needsAccount && (
           <>
             <p className="text-sm text-gris text-center">
-              Tu llave se queda en tu billetera. MicoPay te pedirá firmar y nunca la verá.
+              {t('walletLogin.keyStays')}
             </p>
             {/* #26: el web no guarda llaves; perder la billetera es perder la cuenta. */}
             <p className="text-sm text-tinta border-2 border-tinta rounded-sm px-3 py-2">
-              Guarda la frase de recuperación de tu billetera. Si olvidas su contraseña, solo esa frase te devuelve la
-              cuenta: MicoPay no puede recuperarla.
+              {t('walletLogin.backupPhrase')}
             </p>
             <button type="button" onClick={handleConnect} disabled={loading} className={buttonClass}>
-              {loading ? 'Esperando tu billetera…' : 'Conectar billetera'}
+              {loading ? t('walletLogin.waiting') : t('walletLogin.connect')}
             </button>
           </>
         )}
@@ -127,7 +130,7 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
             <p className="font-mono text-xs text-tinta break-all bg-fondo rounded-sm p-3">{address}</p>
             <div>
               <label htmlFor="wallet-username" className="block text-xs font-bold text-gris uppercase tracking-wider mb-1">
-                Nombre de usuario
+                {t('walletLogin.username')}
               </label>
               <input
                 id="wallet-username"
@@ -142,7 +145,7 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
             </div>
             <div>
               <label htmlFor="wallet-phone" className="block text-xs font-bold text-gris uppercase tracking-wider mb-1">
-                Teléfono <span className="font-normal normal-case">(opcional)</span>
+                {t('walletLogin.phone')} <span className="font-normal normal-case">{t('walletLogin.optional')}</span>
               </label>
               <input
                 id="wallet-phone"
@@ -152,13 +155,13 @@ export default function WalletLogin({ onLoginSuccess }: WalletLoginProps) {
                 maxLength={20}
                 className="w-full px-4 py-3 rounded-sm border-2 border-tinta text-tinta text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
-              <p className="text-[11px] text-gris mt-1">El número nunca se envía al servidor.</p>
+              <p className="text-[11px] text-gris mt-1">{t('walletLogin.phonePrivate')}</p>
             </div>
             <button type="button" onClick={handleRegister} disabled={loading} className={buttonClass}>
-              {loading ? 'Esperando tu billetera…' : 'Crear cuenta'}
+              {loading ? t('walletLogin.waiting') : t('walletLogin.create')}
             </button>
             <button type="button" onClick={handleChangeWallet} className="w-full min-h-12 text-sm text-verde font-bold underline">
-              Usar otra billetera
+              {t('walletLogin.otherWallet')}
             </button>
           </>
         )}
