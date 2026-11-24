@@ -1123,5 +1123,9 @@
   "betaBanner": {
     "s1": "Technical beta on a test network.",
     "s2": "No real money moves: balances are simulated and the tokens have no value."
+  },
+  "activeTrade": {
+    "resume": "You already have an active ${{amount}} MXN trade with this agent. Confirm again to resume it, or create a new one.",
+    "open": "You already have an active ${{amount}} MXN trade with this agent. You can open it from your activity, or create a new one."
   }
 }

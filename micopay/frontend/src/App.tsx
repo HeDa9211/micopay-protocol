@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, useRef, createContext, useContext } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "./i18n";
 import { generateAndStoreKeypair, keypairExists, getPublicKey, revealSecretKey } from './lib/keystore';
 import { IS_EXTERNAL_SIGNER } from './lib/signer/mode';
 import WalletLogin from './pages/WalletLogin';
@@ -1440,13 +1441,13 @@ function App() {
       if (offer) {
         // Se ofrece, no se decide por la persona: el segundo intento la acepta.
         resumeOfferRef.current = offer.id;
-        const message = `Ya tienes una operación activa de $${offer.amount_mxn} MXN con este agente. Confirma de nuevo para retomarla, o crea otra.`;
+        const message = i18n.t('activeTrade.resume', { amount: offer.amount_mxn });
         setTradeError({ ...mapApiError(new Error(message)), message, action: 'retry', error: 'ACTIVE_TRADE_OFFER' });
         return false;
       }
       resumeOfferRef.current = null;
       if (conflict) {
-        const message = `Ya tienes una operación activa de $${conflict.amount_mxn} MXN con este agente. Puedes abrirla desde tu actividad, o crear otra.`;
+        const message = i18n.t('activeTrade.open', { amount: conflict.amount_mxn });
         setTradeError({ ...mapApiError(new Error(message)), message, error: 'ACTIVE_TRADE_OFFER' });
         return false;
       }

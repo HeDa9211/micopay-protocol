@@ -1123,5 +1123,9 @@
   "betaBanner": {
     "s1": "Beta técnica en red de prueba.",
     "s2": "No se mueve dinero real: los saldos son simulados y los tokens no tienen valor."
+  },
+  "activeTrade": {
+    "resume": "Ya tienes una operación activa de ${{amount}} MXN con este agente. Confirma de nuevo para retomarla, o crea otra.",
+    "open": "Ya tienes una operación activa de ${{amount}} MXN con este agente. Puedes abrirla desde tu actividad, o crear otra."
   }
 }
