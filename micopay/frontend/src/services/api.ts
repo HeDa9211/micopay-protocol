@@ -215,6 +215,8 @@ export interface TradeDetailResponse {
   };
   /** Buyer may sign decline() for this exact contract and trade state. */
   decline_available: boolean;
+  /** #16: en `refunded`, si fue decline o vencimiento. */
+  refund_kind?: 'decline' | 'timeout' | null;
   /** Cash-out: el agente ya escaneó el QR y registró la entrega. */
   cash_handoff_confirmed?: boolean;
   merchant_unavailable: boolean;
