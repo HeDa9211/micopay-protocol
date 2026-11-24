@@ -68,7 +68,7 @@ para ensayos en testnet.
 `trades.escrow_contract_id` (migracion `20261007120000`): no cambiar el contrato
 de un activo mientras haya operaciones abiertas en el anterior. Pasos: crear la base y migrarla, los
 parametros SSM, la task definition `micopay-backend-mainnet`, el target group
-y la regla por host en el listener 443 de `micopay-alb`, el servicio, y el DNS
+y la regla por host en el listener 443 del ALB de produccion, el servicio, y el DNS
 de `api-testnet` en Cloudflare.
 
 ## 3. Agente de la demo
