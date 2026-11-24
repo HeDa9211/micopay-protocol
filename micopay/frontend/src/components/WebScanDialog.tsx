@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { finishWebScan, onWebScanRequest, pickScannedValue, usKeyToChar } from '../lib/webScan';
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 /* Escaneo en PC. El campo siempre tiene el foco: un lector USB o Bluetooth
    escribe ahi como un teclado y termina con Enter. La camara se enciende solo
@@ -70,8 +74,8 @@ function Dialog() {
         console.error('[WebScanDialog]', e);
         const denied = e instanceof DOMException && e.name === 'NotAllowedError';
         setCameraError(denied
-          ? 'El navegador no dio permiso para usar la cámara. Actívalo junto a la dirección de la página.'
-          : 'No encontramos una cámara disponible. Usa un lector externo o pega el código.');
+          ? tr('webScan.s1')
+          : tr('webScan.s2'));
         setCamera(false);
       }
     })();
@@ -101,14 +105,14 @@ function Dialog() {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-tinta/70 p-4">
       <div role="dialog" aria-modal="true" aria-labelledby="web-scan-title" className="w-full max-w-md rounded-sm border-2 border-tinta bg-papel shadow-solida">
         <div className="flex items-center justify-between bg-tinta px-5 py-3 text-papel">
-          <h2 id="web-scan-title" className="text-[12px] font-bold uppercase tracking-[.14em]">Escanear código</h2>
+          <h2 id="web-scan-title" className="text-[12px] font-bold uppercase tracking-[.14em]">{tr('webScan.s3')}</h2>
           <button type="button" onClick={() => finishWebScan(null)} aria-label="Cerrar" className="flex min-h-8 min-w-8 items-center justify-center">
             <span aria-hidden="true" className="material-symbols-outlined">close</span>
           </button>
         </div>
         <form onSubmit={submit} className="space-y-4 p-5">
           <label className="block">
-            <span className="text-sm font-bold text-tinta">Lector externo o código pegado</span>
+            <span className="text-sm font-bold text-tinta">{tr('webScan.s4')}</span>
             <input
               ref={inputRef}
               value={text}
@@ -122,8 +126,7 @@ function Dialog() {
               spellCheck={false}
               className="mt-1.5 min-h-12 w-full rounded-sm border-2 border-tinta bg-fondo px-3 py-2 text-[15px] text-tinta outline-none focus:border-naranja"
             />
-            <span className="mt-1.5 block text-xs text-gris">
-              Con un lector USB o Bluetooth, apunta al QR y dispara. El código aparece aquí solo.
+            <span className="mt-1.5 block text-xs text-gris">{tr('webScan.s5')}
             </span>
           </label>
 
@@ -137,7 +140,7 @@ function Dialog() {
               className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-sm border-2 border-tinta font-bold text-tinta"
             >
               <span aria-hidden="true" className="material-symbols-outlined">{camera ? 'close' : 'qr_code_scanner'}</span>
-              {camera ? 'Apagar cámara' : 'Usar cámara'}
+              {camera ? tr('webScan.s6') : tr('webScan.s7')}
             </button>
             <button type="submit" disabled={!text.trim()} className="min-h-12 flex-1 rounded-sm bg-verde font-bold text-papel disabled:opacity-50">
               Continuar

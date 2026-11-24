@@ -4,6 +4,10 @@ import { QRCodeSVG } from 'qrcode.react';
 import { completeTrade, getTrade, openCashClaim, TradeData } from '../services/api';
 import TradeEscrowSummary from '../components/TradeEscrowSummary';
 import { shouldKeepPollingTrade } from '../utils/escrowAmounts';
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 const DEPOSIT_QR_POLL_MS = 5000;
 
@@ -69,7 +73,7 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
             setClaimState('sent');
         } catch (e) {
             setClaimState('idle');
-            setError(e instanceof Error && e.message ? e.message : 'No se pudo enviar el reporte. Intenta de nuevo.');
+            setError(e instanceof Error && e.message ? e.message : tr('depositQr.s1'));
         }
     };
 
@@ -83,7 +87,7 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
         } catch (e) {
             console.error('Deposit completion failed', e);
             setIsConfirming(false);
-            setError('No se pudo completar el depósito. Intenta de nuevo.');
+            setError(tr('depositQr.s2'));
         }
     };
 
@@ -97,10 +101,10 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                     </button>
                     <div className="flex flex-col">
                         <div className="flex items-center gap-1">
-                            <h1 className="font-headline font-bold text-xl text-tinta">Depósito</h1>
+                            <h1 className="font-headline font-bold text-xl text-tinta">{tr('depositQr.s3')}</h1>
                             <span className="material-symbols-outlined text-verde text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
                         </div>
-                        <span className="text-[10px] tracking-wide uppercase font-semibold text-primary">Agente Autorizado</span>
+                        <span className="text-[10px] tracking-wide uppercase font-semibold text-primary">{tr('depositQr.s4')}</span>
                     </div>
                 </div>
                 <div className="w-10 h-10 rounded-sm bg-primary-container flex items-center justify-center text-papel">
@@ -116,7 +120,7 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                     </div>
                     <p className="font-headline font-bold text-primary tracking-tight">
-                        {fundsLocked ? 'Ve al agente y entrégale el efectivo' : 'Esperando a que el agente bloquee los fondos'}
+                        {fundsLocked ? tr('depositQr.s5') : tr('depositQr.s6')}
                     </p>
                 </div>
 
@@ -131,8 +135,7 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                                 {/* Era un mensaje fijo atribuido al agente ("Ya recibí tu
                                     solicitud") que nadie escribio. Los mensajes reales
                                     estan en el chat. */}
-                                <p className="text-sm font-medium text-on-surface-variant leading-snug">
-                                    Habla con el agente por el chat de la operación.
+                                <p className="text-sm font-medium text-on-surface-variant leading-snug">{tr('depositQr.s7')}
                                 </p>
                             </div>
                         </div>
@@ -141,12 +144,10 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                                 onClick={onChat}
                                 className="flex-1 min-h-12 px-4 rounded-sm border-2 border-tinta bg-papel text-tinta font-bold font-bold text-xs hover:bg-primary/5 transition-colors flex items-center justify-center gap-2"
                             >
-                                <span className="material-symbols-outlined text-sm">chat</span>
-                                Abrir chat
+                                <span className="material-symbols-outlined text-sm">chat</span>{tr('depositQr.s8')}
                             </button>
                             <button className="flex-1 min-h-12 px-4 rounded-sm border-2 border-tinta bg-papel text-tinta font-bold font-bold text-xs hover:bg-primary/5 transition-colors flex items-center justify-center gap-2">
-                                <span className="material-symbols-outlined text-sm">location_on</span>
-                                Compartir ubicación
+                                <span className="material-symbols-outlined text-sm">location_on</span>{tr('depositQr.s9')}
                             </button>
                         </div>
                     </div>
@@ -167,12 +168,12 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                     ) : (
                         <div className="bg-papel p-6 rounded-sm border-2 border-tinta w-[240px] h-[240px] flex flex-col items-center justify-center gap-3 text-center">
                             <span className="material-symbols-outlined text-gris text-4xl">hourglass_top</span>
-                            <p className="text-[13px] text-gris leading-snug">El código aparece cuando los fondos del agente quedan en garantía.</p>
+                            <p className="text-[13px] text-gris leading-snug">{tr('depositQr.s10')}</p>
                         </div>
                     )}
                     <div className="text-center space-y-2">
                         {fundsLocked ? (
-                            <p className="font-bold text-[11px] tracking-[0.15em] text-primary uppercase">MUESTRA ESTE CÓDIGO AL AGENTE</p>
+                            <p className="font-bold text-[11px] tracking-[0.15em] text-primary uppercase">{tr('depositQr.s11')}</p>
                         ) : null}
                         {displayTrade ? (
                             <p className="num font-headline font-black text-2xl text-on-surface">${displayTrade.amount_mxn} MXN</p>
@@ -186,8 +187,8 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                     <span className="material-symbols-outlined text-primary shrink-0">info</span>
                         <p className="text-[13px] leading-relaxed text-on-surface/80">
                         {fundsLocked
-                            ? 'Entrega el efectivo al agente. Al recibirlo, escaneará este código y entonces podrás recibir tus activos.'
-                            : 'No entregues efectivo todavía. Primero el agente bloquea en garantía los fondos que vas a recibir; esta pantalla se actualiza sola.'}
+                            ? tr('depositQr.s12')
+                            : tr('depositQr.s13')}
                     </p>
                 </div>
 
@@ -207,7 +208,7 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                             className="w-full h-[52px] bg-primary text-papel font-bold rounded-sm flex items-center justify-center gap-2 active:translate-x-[2px] active:translate-y-[2px] transition-all disabled:opacity-40"
                         >
                             <span className="material-symbols-outlined" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
-                            {cashConfirmed ? 'Recibir mis activos' : 'Esperando que el agente confirme el efectivo…'}
+                            {cashConfirmed ? 'Recibir mis activos' : tr('depositQr.s14')}
                         </button>
                     ) : (
                         <div className="flex flex-col items-center gap-3 py-6">
@@ -215,18 +216,17 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                                 <div className="absolute inset-0 border-4 border-surface-container-high rounded-full"></div>
                                 <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                             </div>
-                            <p className="text-sm font-medium text-gris">Liberando tus activos digitales…</p>
+                            <p className="text-sm font-medium text-gris">{tr('depositQr.s15')}</p>
                         </div>
                     )}
                     <p className="text-[11px] text-gris text-center mt-4 leading-relaxed px-2">
                         {cashConfirmed
-                            ? 'El agente confirmó que recibió tu efectivo.'
-                            : 'El botón se activa cuando el agente escanea tu código.'}
+                            ? tr('depositQr.s16')
+                            : tr('depositQr.s17')}
                     </p>
                     {displayTrade?.status === 'locked' ? (
                         claimState === 'sent' ? (
-                            <p className="text-[12px] text-tinta text-center mt-4 leading-relaxed px-2 font-medium">
-                                Reporte enviado. Los fondos se quedan en garantía y soporte revisará el caso.
+                            <p className="text-[12px] text-tinta text-center mt-4 leading-relaxed px-2 font-medium">{tr('depositQr.s18')}
                             </p>
                         ) : (
                             <button
@@ -234,8 +234,7 @@ const DepositQR = ({ activeTrade, buyerToken, viewerId, onBack, onChat, onSucces
                                 disabled={claimState === 'sending'}
                                 className="w-full min-h-12 mt-4 px-4 rounded-sm border-2 border-tinta bg-papel text-tinta font-bold text-xs flex items-center justify-center gap-2 disabled:opacity-40"
                             >
-                                <span className="material-symbols-outlined text-sm">support_agent</span>
-                                Pagué y no me confirmaron
+                                <span className="material-symbols-outlined text-sm">support_agent</span>{tr('depositQr.s19')}
                             </button>
                         )
                     ) : null}

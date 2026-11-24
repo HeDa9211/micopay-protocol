@@ -11,6 +11,10 @@ import {
   type CurrentUserProfile,
 } from "../services/api";
 import { setLanguage } from "../i18n";
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 /** Deterministic avatar gradient seeded by the Stellar address (no external images). */
 const TIER_STYLE: Record<string, { bg: string; text: string; icon: string }> = {
@@ -86,10 +90,10 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
             const currentUser = await getCurrentUser(fresh);
             if (!cancelled) setProfile(currentUser);
           } catch {
-            if (!cancelled) setError('Tu sesión expiró. Vuelve a iniciar sesión.');
+            if (!cancelled) setError(tr('profileText.s1'));
           }
         } else {
-          setError(err?.response?.data?.message ?? 'No se pudo cargar el perfil. Revisa tu conexión.');
+          setError(err?.response?.data?.message ?? tr('profileText.s2'));
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -111,12 +115,12 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
         .catch(() => {
           if (!cancelled) {
             setLoading(false);
-            setError('Tu sesión expiró. Vuelve a iniciar sesión.');
+            setError(tr('profileText.s1'));
           }
         });
     } else {
       setLoading(false);
-      setError('Tu sesión expiró. Vuelve a iniciar sesión.');
+      setError(tr('profileText.s1'));
     }
 
     return () => { cancelled = true; };
@@ -151,7 +155,7 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
         onDeleted();
       }, 800);
     } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'No se pudo eliminar la cuenta.');
+      setError(err?.response?.data?.message ?? tr('profileText.s3'));
     } finally {
       setDeleting(false);
     }
@@ -175,7 +179,7 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
       const secret = await revealSecretKey();
       setRevealedSecret(secret);
     } catch {
-      setExportError('No se pudo leer tu llave. Cierra la app y vuelve a intentarlo.');
+      setExportError(tr('profileText.s4'));
     }
   };
 
@@ -187,7 +191,7 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
       setShowImportModal(false);
       setImportInput('');
     } catch {
-      setImportError('Llave inválida. Las llaves secretas de Stellar empiezan con "S" y tienen 56 caracteres.');
+      setImportError(tr('profileText.s5'));
     }
   };
 
@@ -227,8 +231,7 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
                 <button
                   onClick={onLogout}
                   className="w-full min-h-12 text-sm font-bold bg-[#C62828] text-papel rounded-sm active:translate-x-[2px] active:translate-y-[2px] transition-all"
-                >
-                  Iniciar sesión de nuevo
+                >{tr('profileText.s6')}
                 </button>
               </div>
           )}
@@ -331,21 +334,19 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
                 </section>
 
                 <section className="bg-papel rounded-sm p-5 border-2 border-tinta/60 space-y-3">
-                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-gris">
-                    Verificación de identidad
+                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-gris">{tr('profileText.s7')}
                   </p>
                   {profile.kyc_provider === 'didit' && (profile.kyc_level ?? 0) > 0 ? (
                     <div className="flex items-center gap-3 rounded-sm bg-verde-suave p-4">
                       <span className="material-symbols-outlined text-verde">verified_user</span>
                       <div>
                         <p className="font-bold text-tinta">Identidad verificada</p>
-                        <p className="text-sm text-gris">Nivel {profile.kyc_level} con Didit</p>
+                        <p className="text-sm text-gris">Nivel {profile.kyc_level}{tr('profileText.s8')}</p>
                       </div>
                     </div>
                   ) : (
                     <>
-                      <p className="text-sm text-gris">
-                        Verifica tu identidad para usar operaciones que requieren límites mayores y para retirar a banco.
+                      <p className="text-sm text-gris">{tr('profileText.s9')}
                       </p>
                       <button
                         type="button"
@@ -406,7 +407,7 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
                             : 'bg-papel text-gris border-linea'
                         }`}
                       >
-                        {lang === 'es' ? '🇲🇽 Español' : '🇺🇸 English'}
+                        {lang === 'es' ? tr('profileText.s10') : '🇺🇸 English'}
                       </button>
                     ))}
                   </div>
@@ -420,16 +421,13 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
 
                   {(providerStatus == null || providerStatus === 'not_enrolled') && (
                     <>
-                      <p className="text-sm text-tinta mb-1 font-bold">Gana dando efectivo</p>
-                      <p className="text-sm text-gris mb-4">
-                        Entrega efectivo a quien lo necesita cerca de ti y cobra tu comisión. No
-                        necesitas tener un negocio.
+                      <p className="text-sm text-tinta mb-1 font-bold">{tr('profileText.s11')}</p>
+                      <p className="text-sm text-gris mb-4">{tr('profileText.s12')}
                       </p>
                       <button
                         onClick={onNavigateJoinNetwork}
                         className="w-full min-h-12 bg-verde text-papel font-bold rounded-sm active:translate-x-[2px] active:translate-y-[2px] transition-all"
-                      >
-                        Únete a Red MicoPay
+                      >{tr('profileText.s13')}
                       </button>
                     </>
                   )}
@@ -437,8 +435,7 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
                   {providerStatus === 'pending_verification' && (
                     <>
                       <p className="text-sm text-tinta mb-1 font-bold">Alta a medias</p>
-                      <p className="text-sm text-gris mb-4">
-                        Te faltan pasos para activarte como agente.
+                      <p className="text-sm text-gris mb-4">{tr('profileText.s14')}
                       </p>
                       <button
                         onClick={onNavigateJoinNetwork}
@@ -451,11 +448,11 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
 
                   {providerStatus === 'active' && (
                     <>
-                      <p className="text-sm text-tinta mb-1 font-bold">Eres agente</p>
+                      <p className="text-sm text-tinta mb-1 font-bold">{tr('profileText.s15')}</p>
                       <p className="text-sm text-gris mb-4">
                         {availability === 'online'
-                          ? 'Apareces en el mapa y puedes recibir solicitudes.'
-                          : 'Estás en pausa: sigues siendo agente, pero no apareces en el mapa.'}
+                          ? tr('profileText.s16')
+                          : tr('profileText.s17')}
                       </p>
                       <button
                         onClick={() =>
@@ -473,16 +470,14 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
                         <button
                           onClick={onNavigateMerchantSettings}
                           className="w-full min-h-12 mt-3 font-bold rounded-sm border-2 border-tinta text-tinta"
-                        >
-                          Tasa, límites y ubicación
+                        >{tr('profileText.s18')}
                         </button>
                       )}
                     </>
                   )}
 
                   {providerStatus === 'suspended' && (
-                    <p className="text-sm text-gris">
-                      Tu cuenta de agente está suspendida. Escríbenos para revisarlo.
+                    <p className="text-sm text-gris">{tr('profileText.s19')}
                     </p>
                   )}
                 </section>
@@ -631,7 +626,7 @@ const Profile = ({ token, username, devicePublicKey, onBack, onDeleted, onLogout
 
         {importedAddress && (
             <div className="fixed bottom-24 left-1/2 z-[70] -translate-x-1/2 max-w-[90vw] rounded-sm bg-[#E6F9F1] border border-[#1D9E75]/20 px-4 py-3 shadow-lg">
-              <p className="text-sm text-[#1D9E75] font-medium">Llave importada</p>
+              <p className="text-sm text-[#1D9E75] font-medium">{tr('profileText.s20')}</p>
               <p className="text-[11px] font-mono text-[#1D9E75] break-all mt-1">{importedAddress}</p>
               <button
                   onClick={() => setImportedAddress(null)}

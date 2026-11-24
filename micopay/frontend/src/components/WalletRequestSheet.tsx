@@ -6,14 +6,18 @@ import {
   subscribeWallet,
 } from '../services/walletConnect';
 import type { EscrowIntent } from '../services/walletIntent';
+import i18n from '../i18n';
+
+// Textos que no pasan por el hook: el arbol se vuelve a pintar al cambiar de idioma.
+const tr = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 const ACTIONS: Record<EscrowIntent['action'], string> = {
-  lock: 'Bloquear fondos en garantía',
-  release: 'Liberar fondos',
-  decline: 'Devolver fondos',
+  lock: tr('walletRequest.s1'),
+  release: tr('walletRequest.s2'),
+  decline: tr('walletRequest.s3'),
 };
 
-const short = (address: string | null) => (address ? `${address.slice(0, 6)}…${address.slice(-6)}` : 'Sin dato');
+const short = (address: string | null) => (address ? `${address.slice(0, 6)}…${address.slice(-6)}` : tr('walletRequest.s4'));
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -37,7 +41,7 @@ export default function WalletRequestSheet() {
     try {
       await action();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudo completar');
+      setError(err instanceof Error ? err.message : tr('walletRequest.s5'));
     } finally {
       setBusy(false);
     }
@@ -47,28 +51,27 @@ export default function WalletRequestSheet() {
     <div className="fixed inset-0 z-50 flex items-end bg-black/50" role="dialog" aria-modal="true">
       <div className="w-full bg-papel text-tinta border-t-2 border-tinta p-5 space-y-3">
         <h2 className="text-lg font-bold">
-          {item.kind === 'proposal' && '¿Conectar esta página?'}
-          {item.kind === 'webAuth' && 'Iniciar sesión en la web'}
+          {item.kind === 'proposal' && tr('walletRequest.s6')}
+          {item.kind === 'webAuth' && tr('walletRequest.s7')}
           {item.kind === 'request' && ACTIONS[item.intent.action]}
         </h2>
-        <Row label="Página" value={item.origin} />
+        <Row label={tr('walletRequest.s8')} value={item.origin} />
         {item.kind === 'proposal' && (
-          <p className="text-sm">
-            Podrá pedirte firmas. Cada firma te pedirá confirmación y tu llave nunca sale de este teléfono.
+          <p className="text-sm">{tr('walletRequest.s9')}
           </p>
         )}
         {item.kind === 'webAuth' && (
           <>
             <Row label="Sitio" value={item.homeDomain} />
             <Row label="Cuenta" value={short(item.account)} />
-            <p className="text-sm">Esta firma solo abre tu sesión. No mueve dinero.</p>
+            <p className="text-sm">{tr('walletRequest.s10')}</p>
           </>
         )}
         {item.kind === 'request' && (
           <>
             <Row label="Monto" value={`$${item.intent.amountMxn} MXN`} />
-            <Row label="Activo" value={item.intent.assetCode ?? 'Sin dato'} />
-            <Row label="Envía" value={short(item.intent.seller)} />
+            <Row label="Activo" value={item.intent.assetCode ?? tr('walletRequest.s4')} />
+            <Row label={tr('walletRequest.s11')} value={short(item.intent.seller)} />
             <Row label="Recibe" value={short(item.intent.buyer)} />
             <Row label="Contrato" value={short(item.intent.contractId)} />
           </>
@@ -90,7 +93,7 @@ export default function WalletRequestSheet() {
             onClick={() => void run(approvePending)}
           >
             {item.kind === 'proposal' && 'Conectar'}
-            {item.kind === 'webAuth' && 'Iniciar sesión'}
+            {item.kind === 'webAuth' && tr('walletRequest.s12')}
             {item.kind === 'request' && 'Firmar'}
           </button>
         </div>
