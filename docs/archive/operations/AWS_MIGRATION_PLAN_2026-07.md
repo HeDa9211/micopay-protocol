@@ -1,5 +1,7 @@
 # Plan de migración a AWS — MicoPay (backend + BD)
 
+> **Histórico.** Los comandos de este plan crearon la base, el balanceador y el target group originales (`micopay-prod`, `micopay-alb`, `micopay-tg`). Esos recursos ya no existen con esos nombres: no copies estos comandos para operar producción. El grupo de seguridad `micopay-alb` sí sigue vigente.
+
 **Fecha:** 2026-07-19 · **Revisión v2 (auditada):** 2026-07-22
 **Estado:** listo para ejecutar
 **Si no tienes contexto de AWS, lee primero:** [`docs/AWS_GUIA_CONCEPTOS.md`](../../operations/AWS_GUIA_CONCEPTOS.md) — explica cada pieza y por qué la arquitectura tiene esta forma. Este documento es el runbook; ese es el mapa.
